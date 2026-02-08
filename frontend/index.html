@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FLAMES 💖</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #1f1c2c, #928dab);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Poppins", Arial, sans-serif;
+    overflow: hidden;
+    transition: background 1s ease;
+}
+
+/* Floating emoji container */
+.emoji {
+    position: absolute;
+    font-size: 24px;
+    animation: floatUp 4s linear forwards;
+    pointer-events: none;
+}
+
+@keyframes floatUp {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-120vh);
+        opacity: 0;
+    }
+}
+
+/* Card */
+.card {
+    background: rgba(0,0,0,0.75);
+    padding: 35px;
+    width: 340px;
+    border-radius: 18px;
+    text-align: center;
+    color: white;
+    animation: slideFade 1s ease;
+    box-shadow: 0 0 40px rgba(0,0,0,0.6);
+}
+
+@keyframes slideFade {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 6px;
+    border: none;
+    font-size: 15px;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+    background: linear-gradient(45deg, hotpink, crimson);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+    transform: scale(1.07);
+    box-shadow: 0 0 25px hotpink;
+}
+
+/* Result */
+#result {
+    margin-top: 25px;
+    font-size: 22px;
+    font-weight: bold;
+    animation: pop 0.6s ease;
+}
+
+@keyframes pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.glow {
+    text-shadow: 0 0 15px currentColor;
+}
+
+.pulse {
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>🔥 FLAMES Calculator</h2>
+
+    <input type="text" id="name1" placeholder="First Name 💖">
+    <input type="text" id="name2" placeholder="Second Name 💖">
+
+    <button onclick="calculateFlames()">Find Relationship 💘</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+function createEmojiRain(emojis) {
+    for (let i = 0; i < 25; i++) {
+        const span = document.createElement("span");
+        span.className = "emoji";
+        span.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        span.style.left = Math.random() * 100 + "vw";
+        span.style.bottom = "-30px";
+        span.style.animationDuration = (3 + Math.random() * 3) + "s";
+        document.body.appendChild(span);
+
+        setTimeout(() => span.remove(), 5000);
+    }
+}
+
+async function calculateFlames() {
+    const name1 = document.getElementById("name1").value.trim();
+    const name2 = document.getElementById("name2").value.trim();
+    const resultDiv = document.getElementById("result");
+
+    if (!name1 || !name2) {
+        resultDiv.innerHTML = "❗ Enter both names";
+        return;
+    }
+
+    resultDiv.innerHTML = "⏳ Calculating love magic... ✨";
+
+    const response = await fetch("http://localhost:3000/flames", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name1, name2 })
+    });
+
+    const data = await response.json();
+    const result = data.result;
+
+    let bg, emojis, color;
+
+    switch (result) {
+        case "Friends":
+            bg = "linear-gradient(135deg, #2193b0, #6dd5ed)";
+            emojis = ["🤝","😄","🎉"];
+            color = "#00e5ff";
+            break;
+        case "Lovers":
+            bg = "linear-gradient(135deg, #ff0844, #ffb199)";
+            emojis = ["❤️","💋","💑"];
+            color = "hotpink";
+            break;
+        case "Affection":
+            bg = "linear-gradient(135deg, #f7971e, #ffd200)";
+            emojis = ["🥰","😍","💞"];
+            color = "#ffd54f";
+            break;
+        case "Marriage":
+            bg = "linear-gradient(135deg, #7f00ff, #e100ff)";
+            emojis = ["💍","👰","🤵"];
+            color = "#e040fb";
+            break;
+        case "Enemies":
+            bg = "linear-gradient(135deg, #232526, #414345)";
+            emojis = ["😈","💥","😡"];
+            color = "#ff5252";
+            break;
+        case "Siblings":
+            bg = "linear-gradient(135deg, #56ab2f, #a8e063)";
+            emojis = ["👫","😂","💚"];
+            color = "#69f0ae";
+            break;
+    }
+
+    document.body.style.background = bg;
+    createEmojiRain(emojis);
+
+    resultDiv.style.color = color;
+    resultDiv.className = "glow pulse";
+    resultDiv.innerHTML = `${emojis[0]} ${result} ${emojis[0]}`;
+}
+</script>
+
+</body>
+</html>
