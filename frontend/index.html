@@ -2,95 +2,110 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FLAMES 💖</title>
+<title>Mini Projects ⚡</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+:root {
+    --neon-pink: #ff2fdc;
+    --neon-blue: #00e5ff;
+    --neon-green: #69f0ae;
+}
+
 body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(135deg, #1f1c2c, #928dab);
+    background: radial-gradient(circle at top, #0f2027, #000);
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: "Poppins", Arial, sans-serif;
     overflow: hidden;
+    color: white;
     transition: background 1s ease;
 }
 
-/* Floating emoji container */
-.emoji {
+/* Floating particles */
+.particle {
     position: absolute;
-    font-size: 24px;
-    animation: floatUp 4s linear forwards;
+    font-size: 20px;
+    animation: float 6s linear forwards;
     pointer-events: none;
 }
 
-@keyframes floatUp {
+@keyframes float {
     from {
-        transform: translateY(0);
+        transform: translateY(100vh) rotate(0deg);
         opacity: 1;
     }
     to {
-        transform: translateY(-120vh);
+        transform: translateY(-120vh) rotate(360deg);
         opacity: 0;
     }
 }
 
 /* Card */
 .card {
-    background: rgba(0,0,0,0.75);
-    padding: 35px;
-    width: 340px;
-    border-radius: 18px;
+    background: rgba(10, 10, 20, 0.85);
+    padding: 30px;
+    width: 92%;
+    max-width: 380px;
+    border-radius: 20px;
     text-align: center;
-    color: white;
-    animation: slideFade 1s ease;
-    box-shadow: 0 0 40px rgba(0,0,0,0.6);
+    box-shadow:
+        0 0 25px rgba(0, 229, 255, 0.3),
+        inset 0 0 20px rgba(255, 47, 220, 0.15);
+    backdrop-filter: blur(8px);
+    animation: appear 1s ease;
 }
 
-@keyframes slideFade {
-    from { opacity: 0; transform: translateY(40px); }
+@keyframes appear {
+    from { opacity: 0; transform: translateY(50px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 h2 {
     margin-bottom: 20px;
     letter-spacing: 1px;
+    text-shadow: 0 0 15px var(--neon-blue);
 }
 
 input {
     width: 100%;
-    padding: 12px;
+    padding: 13px;
     margin: 10px 0;
-    border-radius: 6px;
+    border-radius: 8px;
     border: none;
     font-size: 15px;
+    outline: none;
 }
 
-/* Button */
+/* Buttons */
 button {
     width: 100%;
     padding: 14px;
-    margin-top: 15px;
-    background: linear-gradient(45deg, hotpink, crimson);
+    margin-top: 12px;
+    border-radius: 10px;
     border: none;
-    border-radius: 8px;
-    color: white;
     font-size: 16px;
+    color: white;
     cursor: pointer;
+    background: linear-gradient(45deg, var(--neon-pink), #ff1744);
+    box-shadow: 0 0 15px var(--neon-pink);
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
 button:hover {
-    transform: scale(1.07);
-    box-shadow: 0 0 25px hotpink;
+    transform: scale(1.06);
+    box-shadow: 0 0 30px var(--neon-pink);
 }
 
 /* Result */
 #result {
-    margin-top: 25px;
+    margin-top: 22px;
     font-size: 22px;
     font-weight: bold;
+    text-shadow: 0 0 20px currentColor;
     animation: pop 0.6s ease;
 }
 
@@ -99,113 +114,150 @@ button:hover {
     100% { transform: scale(1); opacity: 1; }
 }
 
-.glow {
-    text-shadow: 0 0 15px currentColor;
-}
-
-.pulse {
-    animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
+.back {
+    background: linear-gradient(45deg, #00e5ff, #2979ff);
+    box-shadow: 0 0 15px var(--neon-blue);
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
-    <h2>🔥 FLAMES Calculator</h2>
-
-    <input type="text" id="name1" placeholder="First Name 💖">
-    <input type="text" id="name2" placeholder="Second Name 💖">
-
-    <button onclick="calculateFlames()">Find Relationship 💘</button>
-
-    <div id="result"></div>
-</div>
+<div class="card" id="app"></div>
 
 <script>
-function createEmojiRain(emojis) {
-    for (let i = 0; i < 25; i++) {
+const app = document.getElementById("app");
+
+/* ---------- PARTICLE EFFECT ---------- */
+function spawnParticles(emojis, count = 35) {
+    for (let i = 0; i < count; i++) {
         const span = document.createElement("span");
-        span.className = "emoji";
+        span.className = "particle";
         span.innerText = emojis[Math.floor(Math.random() * emojis.length)];
         span.style.left = Math.random() * 100 + "vw";
-        span.style.bottom = "-30px";
-        span.style.animationDuration = (3 + Math.random() * 3) + "s";
+        span.style.fontSize = (16 + Math.random() * 18) + "px";
+        span.style.animationDuration = (4 + Math.random() * 3) + "s";
         document.body.appendChild(span);
-
-        setTimeout(() => span.remove(), 5000);
+        setTimeout(() => span.remove(), 7000);
     }
 }
 
+/* ---------- HOME ---------- */
+function showHome() {
+    document.body.style.background = "radial-gradient(circle at top, #0f2027, #000)";
+    app.innerHTML = `
+        <h2>⚡ Mini Projects Hub</h2>
+        <button onclick="showFlames()">🔥 FLAMES</button>
+        <button onclick="showGuess()">🎯 Guessing Game</button>
+    `;
+}
+
+/* ---------- FLAMES ---------- */
+function showFlames() {
+    app.innerHTML = `
+        <h2>🔥 FLAMES Calculator</h2>
+        <input id="name1" placeholder="First Name 💖">
+        <input id="name2" placeholder="Second Name 💖">
+        <button onclick="calculateFlames()">Analyze 💘</button>
+        <div id="result"></div>
+        <button class="back" onclick="showHome()">⬅ Back</button>
+    `;
+}
+
 async function calculateFlames() {
-    const name1 = document.getElementById("name1").value.trim();
-    const name2 = document.getElementById("name2").value.trim();
+    const n1 = name1.value.trim();
+    const n2 = name2.value.trim();
     const resultDiv = document.getElementById("result");
 
-    if (!name1 || !name2) {
-        resultDiv.innerHTML = "❗ Enter both names";
+    if (!n1 || !n2) {
+        resultDiv.innerText = "⚠ Enter both names";
         return;
     }
 
-    resultDiv.innerHTML = "⏳ Calculating love magic... ✨";
-
-    const response = await fetch("http://localhost:3000/flames", {
+    const res = await fetch("http://localhost:3000/flames", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name1, name2 })
+        body: JSON.stringify({ name1: n1, name2: n2 })
     });
 
-    const data = await response.json();
+    const data = await res.json();
     const result = data.result;
 
-    let bg, emojis, color;
+    let emojis = ["💖"];
+    let bg = "#000";
+    let color = "#fff";
 
     switch (result) {
         case "Friends":
-            bg = "linear-gradient(135deg, #2193b0, #6dd5ed)";
-            emojis = ["🤝","😄","🎉"];
+            emojis = ["🤝","😄","🎮"];
+            bg = "radial-gradient(circle, #2193b0, #000)";
             color = "#00e5ff";
             break;
         case "Lovers":
-            bg = "linear-gradient(135deg, #ff0844, #ffb199)";
-            emojis = ["❤️","💋","💑"];
+            emojis = ["❤️","💋","💑","💘"];
+            bg = "radial-gradient(circle, #ff0844, #000)";
             color = "hotpink";
             break;
         case "Affection":
-            bg = "linear-gradient(135deg, #f7971e, #ffd200)";
             emojis = ["🥰","😍","💞"];
+            bg = "radial-gradient(circle, #f7971e, #000)";
             color = "#ffd54f";
             break;
         case "Marriage":
-            bg = "linear-gradient(135deg, #7f00ff, #e100ff)";
             emojis = ["💍","👰","🤵"];
+            bg = "radial-gradient(circle, #7f00ff, #000)";
             color = "#e040fb";
             break;
         case "Enemies":
-            bg = "linear-gradient(135deg, #232526, #414345)";
-            emojis = ["😈","💥","😡"];
+            emojis = ["😈","💥","⚔️"];
+            bg = "radial-gradient(circle, #232526, #000)";
             color = "#ff5252";
             break;
         case "Siblings":
-            bg = "linear-gradient(135deg, #56ab2f, #a8e063)";
             emojis = ["👫","😂","💚"];
+            bg = "radial-gradient(circle, #56ab2f, #000)";
             color = "#69f0ae";
             break;
     }
 
     document.body.style.background = bg;
-    createEmojiRain(emojis);
+    spawnParticles(emojis, 45);
 
     resultDiv.style.color = color;
-    resultDiv.className = "glow pulse";
-    resultDiv.innerHTML = `${emojis[0]} ${result} ${emojis[0]}`;
+    resultDiv.innerText = `${emojis[0]} ${result} ${emojis[0]}`;
 }
+
+/* ---------- GUESSING GAME ---------- */
+function showGuess() {
+    app.innerHTML = `
+        <h2>🎯 Guessing Game</h2>
+        <button onclick="startGame()">Start Game</button>
+        <input id="guess" type="number" placeholder="Guess (1–10)">
+        <button onclick="tryGuess()">Guess</button>
+        <div id="result"></div>
+        <button class="back" onclick="showHome()">⬅ Back</button>
+    `;
+}
+
+async function startGame() {
+    const res = await fetch("http://localhost:3000/guess/start");
+    const data = await res.json();
+    result.innerText = data.message;
+}
+
+async function tryGuess() {
+    const res = await fetch("http://localhost:3000/guess/try", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ guess: guess.value })
+    });
+    const data = await res.json();
+
+    spawnParticles(["⚡","💻","🎯","🔥"], 25);
+    result.innerText = data.message;
+}
+
+showHome();
 </script>
 
 </body>
